@@ -1,0 +1,4 @@
+encoding: 'gbk'
+
+chap_title: '#title'
+chap_body: '#content'

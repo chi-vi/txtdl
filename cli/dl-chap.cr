@@ -23,8 +23,9 @@ links.each do |link|
     end
   end
 
-  puts "- Kết quả đã được lưu vào tệp tin #{out_path.colorize.green}"
+  puts "  Kết quả đã được lưu vào #{out_path.colorize.green}"
 end
 
+puts
 print "-- Gõ Enter để thoát chương trình! --".colorize.dark_gray
 gets

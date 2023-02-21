@@ -10,7 +10,7 @@ class DL::Chap
     site = Site.load(host)
     html = Util.load_html(link, ttl: ttl, encoding: site.encoding)
 
-    new(html, site, link)
+    new(html, site, link, host)
   end
 
   @doc : Page
@@ -18,10 +18,10 @@ class DL::Chap
   getter b_id : String
   getter c_id : String
 
-  def initialize(html : String, @site : Site, @link : String)
-    @doc = Page.new(html)
-    @host = site.hostname
+  def initialize(html : String, @site : Site, @link : String, @host)
     *_, @b_id, @c_id = link.scan(/\d+/).map(&.[0])
+
+    @doc = Page.new(html)
   end
 
   getter title : String do
@@ -48,6 +48,10 @@ class DL::Chap
 
     lines.shift if reject_first_line?(lines.first)
     lines.pop if lines.last == "(本章完)"
+
+    @site.chap_clean_re.each do |regex|
+      lines.map!(&.gsub(regex, ""))
+    end
 
     lines.reject(&.empty?)
   rescue ex

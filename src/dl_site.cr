@@ -4,13 +4,21 @@ require "colorize"
 struct DL::Site
   include YAML::Serializable
 
-  getter hostname : String
   getter encoding = "GBK"
 
   getter chap_title = "h1"
   getter chap_body = "#content"
 
+  getter chap_clean = [] of String
+
   getter cookie = ""
+
+  @[YAML::Field(ignore: true)]
+  getter chap_clean_re = [] of Regex
+
+  def after_initialize
+    @chap_clean_re = @chap_clean.map { |x| Regex.new(x) }
+  end
 
   ###
 

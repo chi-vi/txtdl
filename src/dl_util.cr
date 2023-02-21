@@ -6,6 +6,14 @@ require "compress/gzip"
 module DL::Util
   extend self
 
+  def error_notif(reason : String, message : String)
+    puts "- #{reason}: #{message.colorize.red}"
+    puts
+    print "-- Gõ Enter để thoát chương trình! --".colorize.dark_gray
+    gets
+    exit 1
+  end
+
   def read_gz(path : String)
     File.open(path) { |io| Compress::Gzip::Reader.open(io, &.gets_to_end) }
   end
@@ -28,31 +36,32 @@ module DL::Util
   TLS = OpenSSL::SSL::Context::Client.new
   TLS.ca_certificates = CA_FILE
 
+  USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:110.0) Gecko/20100101 Firefox/110.0"
+
+  HEADERS = HTTP::Headers{"User-Agent" => USER_AGENT}
+
   def fetch_page(href : String, encoding = "UTF-8")
     tls = href.starts_with?("https") ? TLS : false
 
-    HTTP::Client.get(href, tls: tls) do |res|
-      unless res.status.success?
-        puts "- Không tải được dữ liệu: #{res.body_io.gets_to_end.colorize.red}"
-        print "-- Gõ Enter để thoát chương trình! --".colorize.dark_gray
-
-        gets
-        exit 1
+    HTTP::Client.get(href, tls: tls, headers: HEADERS) do |res|
+      unless res.success?
+        error_notif("Không tải được dữ liệu", res.body_io.gets_to_end)
+        # unreachable!
       end
 
       res.body_io.set_encoding(encoding)
       html = res.body_io.gets_to_end
 
       if html.empty?
-        puts "- Trang #{href} không có nội dung, mời xem lại".colorize.red
-        print "-- Gõ Enter để thoát chương trình! --".colorize.dark_gray
-
-        gets
-        exit 1
+        error_notif("Không tải được dữ liệu", "Trang không có nội dung")
+        # unreachable!
       end
 
       return html if encoding == "UTF-8"
       html.sub(/(?<==|")#{encoding}(?=;|")/i, "utf-8")
+    rescue ex
+      error_notif("Không tải được dữ liệu", ex.message || "Không rõ lỗi")
+      # unreachable!
     end
   end
 
@@ -76,7 +85,7 @@ module DL::Util
       puts "- Trang #{link} đã được lưu, không tải lại!".colorize.magenta
       read_gz(path)
     else
-      puts "- Đang tải trang #{link}".colorize.green
+      puts "- Đang tải trang #{link.colorize.cyan}"
       fetch_page(link, encoding).tap { |html| save_gz(path, html) }
     end
   end
