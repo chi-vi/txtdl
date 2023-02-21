@@ -1,4 +1,7 @@
 encoding: 'gbk'
 
+list_type: 'wenku'
+list_css: 'table.css > tbody'
+
 chap_title: '#title'
 chap_body: '#content'

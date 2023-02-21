@@ -3,7 +3,7 @@ require "../src/dl_chap"
 links = ARGV.select(&.starts_with?("http"))
 
 if links.empty?
-  print "Nhập vào chương cần tải: ".colorize.blue
+  print "Nhập vào đường dẫn chương: ".colorize.blue
   links = [gets.not_nil!.strip]
 end
 

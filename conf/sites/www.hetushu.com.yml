@@ -1,5 +1,8 @@
 encoding: UTF-8
 
+list_type: 'chdiv'
+list_css: '#dir'
+
 chap_title: '#content .h2'
 chap_body: '#content'
 

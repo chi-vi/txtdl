@@ -82,10 +82,10 @@ module DL::Util
     path = cache_path(link)
 
     if file_exists?(path, ttl: ttl)
-      puts "- Trang #{link} đã được lưu, không tải lại!".colorize.magenta
+      puts "- Đã tải: #{link.colorize.magenta}"
       read_gz(path)
     else
-      puts "- Đang tải trang #{link.colorize.cyan}"
+      puts "- Đang tải: #{link.colorize.cyan}"
       fetch_page(link, encoding).tap { |html| save_gz(path, html) }
     end
   end

@@ -6,6 +6,9 @@ struct DL::Site
 
   getter encoding = "GBK"
 
+  getter list_type = "chdiv"
+  getter list_css = "#list > dl"
+
   getter chap_title = "h1"
   getter chap_body = "#content"
 

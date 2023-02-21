@@ -1,8 +1,6 @@
-require "yaml"
-
-require "./dl_page"
-require "./dl_site"
 require "./dl_util"
+require "./dl_site"
+require "./dl_page"
 
 class DL::Chap
   def self.new(link : String, ttl = 10.days)
@@ -19,9 +17,9 @@ class DL::Chap
   getter c_id : String
 
   def initialize(html : String, @site : Site, @link : String, @host)
-    *_, @b_id, @c_id = link.scan(/\d+/).map(&.[0])
-
     @doc = Page.new(html)
+
+    *_, @b_id, @c_id = link.scan(/\d+/).map(&.[0])
   end
 
   getter title : String do
