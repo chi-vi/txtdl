@@ -5,15 +5,16 @@ authors:
   - NPN <me@npn.am>
 
 targets:
-  dl-chap:
-    main: src/dl-chap.cr
+  dl-book:
+    main: cli/dl-book.cr
 
-  dl-many:
-    main: src/dl-many.cr
+  dl-chap:
+    main: cli/dl-chap.cr
 
 dependencies:
   lexbor:
-    github: kostya/lexbor
+    github: etra0/lexbor
+    branch: remove-make-dependency
 
 crystal: 1.7.0
 

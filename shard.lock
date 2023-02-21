@@ -1,6 +1,6 @@
 version: 2.0
 shards:
   lexbor:
-    git: https://github.com/kostya/lexbor.git
-    version: 3.0.4
+    git: https://github.com/etra0/lexbor.git
+    version: 3.0.4+git.commit.bd2cb9457543105f25a02ef50d926c8f4ca0b81f
 
