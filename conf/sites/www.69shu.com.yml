@@ -1,0 +1,5 @@
+hostname: www.69shu.com
+encoding: GBK
+
+chap_title: '.bread > a:last-child'
+chap_body: '.txtnav'

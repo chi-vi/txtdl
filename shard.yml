@@ -1,0 +1,20 @@
+name: txtdl
+version: 0.1.0
+
+authors:
+  - NPN <me@npn.am>
+
+targets:
+  dl-chap:
+    main: src/dl-chap.cr
+
+  dl-many:
+    main: src/dl-many.cr
+
+dependencies:
+  lexbor:
+    github: kostya/lexbor
+
+crystal: 1.7.0
+
+license: MIT
