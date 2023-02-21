@@ -21,7 +21,7 @@ def download_chap(link : String, label = "-/-")
   out_path = File.join(out_dir, "#{chdl.c_id}.txt")
 
   content = String.build do |io|
-    io << chdl.title
+    io << chdl.title << '\n'
     chdl.body.each { |line| io << '\n' << line }
   end
 
@@ -51,12 +51,12 @@ def download_book(link : String)
   chdiv = ""
 
   chaps[(chmin - 1)..(chmax - 1)].each_with_index(1) do |chap, idx|
-    content << chap.chdiv << '\n' << '\n' if chap.chdiv != chdiv
+    content << chap.chdiv << "\n\n\n" if chap.chdiv != chdiv
     chdiv = chap.chdiv
 
     label = "#{idx}/#{chmax - chmin + 1}"
     content << download_chap(chap.href, label: label)
-    content << '\n' << '\n'
+    content << "\n\n\n"
   end
 
   out_path = File.join("out", nvdl.host, "#{nvdl.b_id} (#{chmin}-#{chmax}).txt")

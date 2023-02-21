@@ -16,11 +16,8 @@ links.each do |link|
   out_path = File.join(out_dir, "#{chdl.c_id}.txt")
 
   File.open(out_path, "w") do |file|
-    file << chdl.title
-
-    chdl.body.each do |line|
-      file << '\n' << line
-    end
+    file << chdl.title << '\n'
+    chdl.body.each { |line| file << '\n' << line }
   end
 
   puts "  Kết quả đã được lưu vào #{out_path.colorize.green}"
