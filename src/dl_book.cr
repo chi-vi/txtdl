@@ -3,23 +3,23 @@ require "./dl_site"
 require "./dl_page"
 
 class DL::Book
-  def self.new(link : String, ttl : Time::Span = 3.hours)
-    host = Util.get_site_host(link)
-    site = Site.load(host)
-    html = Util.load_html(link, ttl: ttl, encoding: site.encoding)
-
-    new(html, site, link, host)
-  end
-
+  @uri : URI
   @doc : Page
+  @site : Site
+
   getter host : String
   getter b_id : String
 
   record Chap, title : String, chdiv : String, href : String
 
-  def initialize(html : String, @site : Site, @link : String, @host)
+  def initialize(link : String, ttl : Time::Span = 3.hours)
+    @uri = URI.parse(link)
+    @host = @uri.hostname.not_nil!
+
+    @site = Site.load(@host)
+
+    html = Util.load_html(link, ttl: ttl, encoding: @site.encoding)
     @doc = Page.new(html)
-    @root = link.ends_with?('/') ? link : File.dirname(link) + "/"
 
     @b_id = link.scan(/\d+/).last[0]
     @chaps = [] of Chap
@@ -49,21 +49,13 @@ class DL::Book
     chdiv.gsub(/《.*》/, "").gsub(/\n|\t|\s{3,}/, "  ").strip
   end
 
-  private def gen_path(href : String)
-    return href if href.starts_with?("http")
-    return "http:#{href}" if @site.list_type == "ymxwx"
-    href[0] == '/' ? "#{@host}#{href}" : "#{@root}#{href}"
-  end
-
   private def add_chap(node : Lexbor::Node?, chdiv = "")
     return unless node && (href = node.attributes["href"]?)
 
     title = node.inner_text("  ")
     return if title.empty?
 
-    # title, chdiv = TextUtil.format_title(title, chdiv)
-
-    @chaps << Chap.new(title, chdiv, gen_path(href))
+    @chaps << Chap.new(title, chdiv, @uri.resolve(href).to_s)
   rescue ex
     Log.error(exception: ex) { ex.message.colorize.red }
   end
