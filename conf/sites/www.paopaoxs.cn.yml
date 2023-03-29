@@ -1,0 +1,9 @@
+encoding: UTF-8
+
+list_type: 'plain'
+list_css: '.cate-list > ul > li > a'
+
+chap_title: '.j_chapterName'
+chap_body: '.read-content'
+
+chap_ids: '(\d+)/(.+).html$'

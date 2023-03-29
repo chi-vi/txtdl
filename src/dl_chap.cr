@@ -18,8 +18,7 @@ class DL::Chap
 
   def initialize(html : String, @site : Site, @link : String, @host)
     @doc = Page.new(html)
-
-    *_, @b_id, @c_id = link.scan(/\d+/).map(&.[0])
+    _, @b_id, @c_id = link.match(@site.chap_ids_re).not_nil!
   end
 
   getter title : String do

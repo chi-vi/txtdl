@@ -1,0 +1,7 @@
+encoding: UTF-8
+
+list_type: 'plain'
+list_css: '.dccss > a'
+
+chap_title: 'h1'
+chap_body: '#content'

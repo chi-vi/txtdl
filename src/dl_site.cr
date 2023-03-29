@@ -12,15 +12,20 @@ struct DL::Site
   getter chap_title = "h1"
   getter chap_body = "#content"
 
-  getter chap_clean = [] of String
-
   getter cookie = ""
+
+  getter chap_ids = "(\\d+)\\D+(\\d+)\\D*$"
+  getter chap_clean = [] of String
 
   @[YAML::Field(ignore: true)]
   getter chap_clean_re = [] of Regex
 
+  @[YAML::Field(ignore: true)]
+  getter chap_ids_re = /(\d+)\D+(\d+)\D*$/
+
   def after_initialize
     @chap_clean_re = @chap_clean.map { |x| Regex.new(x) }
+    @chap_ids_re = Regex.new(chap_ids)
   end
 
   ###
